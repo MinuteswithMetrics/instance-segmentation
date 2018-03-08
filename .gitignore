@@ -1,0 +1,6 @@
+*.h5
+logs
+__pycache__
+.ipynb_checkpoints
+train.sh
+org_train.ipynb
