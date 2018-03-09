@@ -177,6 +177,7 @@ class DSBConfig(Config):
 
     # Ratios of anchors at each cell (width/height)
     # A value of 1 represents a square anchor, and 0.5 is a wide anchor
+    #RPN_ANCHOR_RATIOS = [0.5, 1, 2]
     RPN_ANCHOR_RATIOS = [0.25, 0.5, 1, 2, 4]
 
     # Reduce training ROIs per image because the images are small and have
