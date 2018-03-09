@@ -4,3 +4,4 @@ __pycache__
 .ipynb_checkpoints
 train.sh
 org_train.ipynb
+*.csv
