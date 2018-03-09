@@ -102,12 +102,28 @@ def main(args):
     # Passing layers="all" trains all layers. You can also
     # pass a regular expression to select which layers to
     # train by name pattern.
-    model.train(
-            dataset_train,
-            dataset_val,
-            learning_rate=config.LEARNING_RATE,
-            epochs=args.epochs,
-            layers="all")
+    if args.train_schedule:
+        model.train(
+                dataset_train,
+                dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=args.train_schedule,
+                layers="all")
+
+        model.train(
+                dataset_train,
+                dataset_val,
+                learning_rate=config.LEARNING_RATE / 10,
+                epochs=args.epochs,
+                layers="all")
+    else:
+        model.train(
+                dataset_train,
+                dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=args.epochs,
+                layers="all")
+
 
     # Save weights
     # Typically not needed because callbacks save after every epoch
@@ -158,6 +174,11 @@ if __name__ == "__main__":
             type=int,
             default=5,
             help='epochs of freeze weights except heads layers')
+    argparser.add_argument(
+            '--train_schedule',
+            type=int,
+            default=None,
+            help='training schedule')
     args = argparser.parse_args()
 
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
