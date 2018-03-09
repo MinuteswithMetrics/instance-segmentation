@@ -49,6 +49,7 @@ def main(args):
     config = DSBConfig()
     config.STEPS_PER_EPOCH  = len(train_ids)
     config.VALIDATION_STEPS = len(val_ids)
+    config.IMAGE_MAX_DIM = args.input_size
     config.display()
 
     # dataset
@@ -162,9 +163,11 @@ if __name__ == "__main__":
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
+    """
     gpu_options = tf.GPUOptions(allow_growth=True)
     config = tf.ConfigProto(gpu_options=gpu_options)
     session = tf.Session(config=config)
     KTF.set_session(session)
+    """
 
     main(args)

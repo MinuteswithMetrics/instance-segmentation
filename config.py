@@ -143,10 +143,6 @@ class Config(object):
               int(math.ceil(self.IMAGE_SHAPE[1] / stride))]
              for stride in self.BACKBONE_STRIDES])
 
-    def set_ids(train_ids, val_ids):
-        STEP_PER_EPOCH = len(train_ids)
-        VALIDATION_STEPS = len(val_ids)
-
     def display(self):
         """ Display Configuration values """
         print("\nConfigurations:")

@@ -2209,11 +2209,8 @@ class MaskRCNN():
                 write_images=False)
         checkpoint = keras.callbacks.ModelCheckpoint(
                 self.checkpoint_path,
-                monitor='val_loss',
                 verbose=1,
-                save_best_only=True,
-                mode='min',
-                period=1)
+                save_weights_only=True)
         """
         early_stop = keras.callbacks.EarlyStopping(
                 monitor='val_loss',
