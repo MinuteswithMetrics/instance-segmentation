@@ -120,7 +120,7 @@ def main(args):
         model.train(
                 dataset_train,
                 dataset_val,
-                learning_rate=config.LEARNING_RATE,
+                learning_rate=config.LEARNING_RATE / 10,
                 epochs=args.epochs,
                 layers="all")
 
@@ -184,11 +184,9 @@ if __name__ == "__main__":
     #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-    """
-    gpu_options = tf.GPUOptions(allow_growth=True)
-    config = tf.ConfigProto(gpu_options=gpu_options)
-    session = tf.Session(config=config)
-    KTF.set_session(session)
-    """
+    #gpu_options = tf.GPUOptions(allow_growth=True)
+    #config = tf.ConfigProto(gpu_options=gpu_options)
+    #session = tf.Session(config=config)
+    #KTF.set_session(session)
 
     main(args)
