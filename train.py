@@ -181,8 +181,8 @@ if __name__ == "__main__":
             help='training schedule')
     args = argparser.parse_args()
 
-    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
+    #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
     """
     gpu_options = tf.GPUOptions(allow_growth=True)
