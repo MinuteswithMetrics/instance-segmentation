@@ -184,9 +184,11 @@ if __name__ == "__main__":
     #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-    #gpu_options = tf.GPUOptions(allow_growth=True)
-    #config = tf.ConfigProto(gpu_options=gpu_options)
-    #session = tf.Session(config=config)
-    #KTF.set_session(session)
+    """
+    gpu_options = tf.GPUOptions(allow_growth=True)
+    config = tf.ConfigProto(gpu_options=gpu_options)
+    session = tf.Session(config=config)
+    KTF.set_session(session)
+    """
 
     main(args)
