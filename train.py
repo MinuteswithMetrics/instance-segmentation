@@ -5,6 +5,7 @@ import random
 import math
 import numpy as np
 import argparse
+import datetime
 from skimage.io import imread, imshow, imread_collection, concatenate_images
 from skimage.transform import resize
 from skimage.morphology import label
@@ -17,8 +18,8 @@ from mask_rcnn import log
 import utils
 import visualize
 
-from utils import DSBDataset
-from config import DSBConfig
+from dsb_config import DSBConfig
+from dsb_dataset import DSBDataset
 
 
 def main(args):
@@ -47,21 +48,20 @@ def main(args):
 
     # dataset config
     config = DSBConfig()
-    config.STEPS_PER_EPOCH  = len(train_ids)
-    config.VALIDATION_STEPS = len(val_ids)
-    config.IMAGE_MAX_DIM = args.input_size
+    config.STEPS_PER_EPOCH  = int(len(data_ids)/(config.GPU_COUNT*config.IMAGES_PER_GPU))
+    config.VALIDATION_STEPS = int(len(val_ids)/(config.GPU_COUNT*config.IMAGES_PER_GPU))
     config.display()
 
     # dataset
     # Training dataset
     input_size = args.input_size
     dataset_train = DSBDataset()
-    dataset_train.load_DSB(input_size, input_size, train_ids, DATA_PATH)
+    dataset_train.load_bowl(args.data_path)
     dataset_train.prepare()
 
     # Validation dataset
     dataset_val = DSBDataset()
-    dataset_val.load_DSB(input_size, input_size, val_ids, DATA_PATH)
+    dataset_val.load_bowl(args.data_path)
     dataset_val.prepare()
 
     # Create model in training mode
@@ -102,33 +102,19 @@ def main(args):
     # Passing layers="all" trains all layers. You can also
     # pass a regular expression to select which layers to
     # train by name pattern.
-    if args.train_schedule:
-        model.train(
-                dataset_train,
-                dataset_val,
-                learning_rate=config.LEARNING_RATE,
-                epochs=args.train_schedule,
-                layers="all")
-
-        model.train(
-                dataset_train,
-                dataset_val,
-                learning_rate=config.LEARNING_RATE / 10,
-                epochs=args.epochs,
-                layers="all")
-    else:
-        model.train(
-                dataset_train,
-                dataset_val,
-                learning_rate=config.LEARNING_RATE / 10,
-                epochs=args.epochs,
-                layers="all")
+    model.train(
+            dataset_train,
+            dataset_val,
+            learning_rate=config.LEARNING_RATE / 10,
+            epochs=args.epochs,
+            layers="all")
 
 
     # Save weights
     # Typically not needed because callbacks save after every epoch
     # Uncomment to save manually
-    model_path = os.path.join(MODEL_DIR, "mask_rcnn_DSB.h5")
+    now = datetime.datetime.today()
+    model_path = os.path.join(MODEL_DIR, str(now.day)+"-"+str(now.hour)+"-"+"DSB.h5")
     model.keras_model.save_weights(model_path)
 
 
@@ -174,11 +160,6 @@ if __name__ == "__main__":
             type=int,
             default=5,
             help='epochs of freeze weights except heads layers')
-    argparser.add_argument(
-            '--train_schedule',
-            type=int,
-            default=None,
-            help='training schedule')
     args = argparser.parse_args()
 
     #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"

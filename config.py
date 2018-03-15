@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
 import math
 import numpy as np
 
 
 class Config(object):
+    """
+    Base configuration class. For custom configurations, create a
+    sub-class that inherits from this one and override properties
+    that need to be changed.
+    """
     # Name the configurations. For example, 'COCO', 'Experiment 3', ...etc.
     # Useful if your code needs to do things differently depending on which
     # experiment is running.
-    # Override in sub-classes
-    NAME = None
+    NAME = None  # Override in sub-classes
 
     # NUMBER OF GPUs to use. For CPU training, use 1
     GPU_COUNT = 1
@@ -37,7 +42,7 @@ class Config(object):
     BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     # Number of classification classes (including background)
-    NUM_CLASSES = 2  # Override in sub-classes
+    NUM_CLASSES = 1  # Override in sub-classes
 
     # Length of square anchor side in pixels
     RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)
@@ -71,8 +76,8 @@ class Config(object):
     # Images are resized such that the smallest side is >= IMAGE_MIN_DIM and
     # the longest side is <= IMAGE_MAX_DIM. In case both conditions can't
     # be satisfied together the IMAGE_MAX_DIM is enforced.
-    IMAGE_MIN_DIM = 320
-    IMAGE_MAX_DIM = 380
+    IMAGE_MIN_DIM = 800
+    IMAGE_MAX_DIM = 1024
     # If True, pad images with zeros such that they're (max_dim by max_dim)
     IMAGE_PADDING = True  # currently, the False option is not supported
 
@@ -128,8 +133,10 @@ class Config(object):
     # train the RPN.
     USE_RPN_ROIS = True
 
+    RESNET_ARCHITECTURE = "resnet101"
+
     def __init__(self):
-        """ Set values of computed attributes """
+        """Set values of computed attributes."""
         # Effective batch size
         self.BATCH_SIZE = self.IMAGES_PER_GPU * self.GPU_COUNT
 
@@ -144,42 +151,9 @@ class Config(object):
              for stride in self.BACKBONE_STRIDES])
 
     def display(self):
-        """ Display Configuration values """
+        """Display Configuration values."""
         print("\nConfigurations:")
         for a in dir(self):
             if not a.startswith("__") and not callable(getattr(self, a)):
                 print("{:30} {}".format(a, getattr(self, a)))
         print("\n")
-
-
-class DSBConfig(Config):
-
-    # Give the configuration a recognizable name
-    NAME = "DSB"
-
-    # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
-    # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-    GPU_COUNT = 4
-    IMAGES_PER_GPU = 4
-
-    # Number of classes (including background)
-    # background + cell
-    NUM_CLASSES = 1 + 1
-
-    # Use small images for faster training. Set the limits of the small side
-    # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 256
-    IMAGE_MAX_DIM = 256
-
-    # Use smaller anchors because our image and objects are small
-    # anchor side in pixels
-    RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)
-
-    # Ratios of anchors at each cell (width/height)
-    # A value of 1 represents a square anchor, and 0.5 is a wide anchor
-    RPN_ANCHOR_RATIOS = [0.5, 1, 2]
-    #RPN_ANCHOR_RATIOS = [0.25, 0.5, 1, 2, 4]
-
-    # Reduce training ROIs per image because the images are small and have
-    # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 200
