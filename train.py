@@ -125,7 +125,7 @@ if __name__ == "__main__":
             '-d',
             '--data_path',
             type=str,
-            default="../../dataset/DSB/train/",
+            default="../../dataset/DSB/stage1_train/",
             help='path to data list')
     argparser.add_argument(
             '-s',

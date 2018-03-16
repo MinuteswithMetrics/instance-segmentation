@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from config import Config
+import numpy as np
+
 
 class DSBConfig(Config):
     """
@@ -25,34 +27,30 @@ class DSBConfig(Config):
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
-
     # The strides of each layer of the FPN Pyramid. These values
     # are based on a Resnet101 backbone.
     BACKBONE_STRIDES = [4, 8, 16, 32, 64]
-
-    # Length of square anchor side in pixels
-    RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)
-
+    # How many anchors per image to use for RPN training
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 320 #300
     # Ratios of anchors at each cell (width/height)
     # A value of 1 represents a square anchor, and 0.5 is a wide anchor
-    RPN_ANCHOR_RATIOS = [0.25, 0.5, 1, 2, 4]
-
+    RPN_ANCHOR_RATIOS = [0.5, 1, 2]
     # Anchor stride
     # If 1 then anchors are created for each cell in the backbone feature map.
     # If 2, then anchors are created for every other cell, and so on.
     RPN_ANCHOR_STRIDE = 1
-
-
     # Non-max suppression threshold to filter RPN proposals.
     # You can reduce(increase?) this during training to generate more propsals.
     RPN_NMS_THRESHOLD = 0.7
 
-    # How many anchors per image to use for RPN training
-    RPN_TRAIN_ANCHORS_PER_IMAGE = 256
-
     # ROIs kept after non-maximum supression (training and inference)
     POST_NMS_ROIS_TRAINING = 2000
-    POST_NMS_ROIS_INFERENCE = 1000
+    POST_NMS_ROIS_INFERENCE = 2000
+
+    # Pooled ROIs
+    POOL_SIZE = 7
+    MASK_POOL_SIZE = 14
+    MASK_SHAPE = [28, 28]
 
     # If enabled, resizes instance masks to a smaller size to reduce
     # memory load. Recommended when using high-resolution images.
@@ -68,9 +66,18 @@ class DSBConfig(Config):
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 50
 
-
     MAX_GT_INSTANCES = 256
 
     DETECTION_MAX_INSTANCES = 512
+    # Minimum probability value to accept a detected instance
+    # ROIs below this threshold are skipped
+    DETECTION_MIN_CONFIDENCE = 0.7 # may be smaller?
+    # Non-maximum suppression threshold for detection
+    DETECTION_NMS_THRESHOLD = 0.3 # 0.3
+
+    MEAN_PIXEL = np.array([42.17746161, 38.21568456, 46.82167803])
+
+    # Weight decay regularization
+    WEIGHT_DECAY = 0.0001
 
     RESNET_ARCHITECTURE = "resnet101"
