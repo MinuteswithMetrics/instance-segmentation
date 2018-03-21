@@ -17,6 +17,12 @@ class DSBConfig(Config):
     GPU_COUNT = 4
     IMAGES_PER_GPU = 2
 
+    # Total number of steps (batches of samples) to yield from generator before declaring one epoch finished and starting the next epoch.
+    # typically be equal to the number of samples of your dataset divided by the batch size
+    STEPS_PER_EPOCH = None
+    # use small validation steps since the epoch is small
+    VALIDATION_STEPS = 50
+
     # Number of classes (including background)
     NUM_CLASSES = 1 + 1 # background + nuclei
 
@@ -24,6 +30,8 @@ class DSBConfig(Config):
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512
+
+    LEARNING_RATE = 1e-4
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
@@ -34,7 +42,7 @@ class DSBConfig(Config):
     RPN_TRAIN_ANCHORS_PER_IMAGE = 320 #300
     # Ratios of anchors at each cell (width/height)
     # A value of 1 represents a square anchor, and 0.5 is a wide anchor
-    RPN_ANCHOR_RATIOS = [0.5, 1, 2]
+    RPN_ANCHOR_RATIOS = [0.25, 0.5, 1, 2, 4]
     # Anchor stride
     # If 1 then anchors are created for each cell in the backbone feature map.
     # If 2, then anchors are created for every other cell, and so on.
@@ -42,6 +50,7 @@ class DSBConfig(Config):
     # Non-max suppression threshold to filter RPN proposals.
     # You can reduce(increase?) this during training to generate more propsals.
     RPN_NMS_THRESHOLD = 0.7
+    MAX_GT_INSTANCES = 256
 
     # ROIs kept after non-maximum supression (training and inference)
     POST_NMS_ROIS_TRAINING = 2000
@@ -60,15 +69,9 @@ class DSBConfig(Config):
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 600
+    TRAIN_ROIS_PER_IMAGE = 512
 
-    STEPS_PER_EPOCH = None
-    # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 50
-
-    MAX_GT_INSTANCES = 256
-
-    DETECTION_MAX_INSTANCES = 512
+    DETECTION_MAX_INSTANCES = 400
     # Minimum probability value to accept a detected instance
     # ROIs below this threshold are skipped
     DETECTION_MIN_CONFIDENCE = 0.7 # may be smaller?

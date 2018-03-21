@@ -21,7 +21,8 @@ model = modellib.MaskRCNN(mode="inference",
 # Either set a specific path or find last trained weights
 # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
 #model_path = model.find_last()[1]
-model_path = "./logs/dsb20180316T1622/mask_rcnn_dsb_0034.h5"
+model_path = "./logs/20-0-DSB.h5"
+name, ext = os.path.splitext(os.path.basename(model_path))
 
 # Load trained weights (fill in path to trained weights here)
 assert model_path != "", "Provide path to trained weights"
@@ -48,4 +49,4 @@ for image_id in tqdm(sample_submission.ImageId):
 
 
 
-f.write2csv('./submit/{}.csv'.format(model_path[-13:-3]), ImageId, EncodedPixels)
+f.write2csv('./submit/{}.csv'.format(name), ImageId, EncodedPixels)

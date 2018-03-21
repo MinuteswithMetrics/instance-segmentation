@@ -105,7 +105,19 @@ def main(args):
     model.train(
             dataset_train,
             dataset_val,
+            learning_rate=config.LEARNING_RATE,
+            epochs=args.epochs,
+            layers="all")
+    model.train(
+            dataset_train,
+            dataset_val,
             learning_rate=config.LEARNING_RATE / 10,
+            epochs=args.epochs,
+            layers="all")
+    model.train(
+            dataset_train,
+            dataset_val,
+            learning_rate=config.LEARNING_RATE / 100,
             epochs=args.epochs,
             layers="all")
 
