@@ -42,7 +42,7 @@ class DSBConfig(Config):
     RPN_TRAIN_ANCHORS_PER_IMAGE = 320 #300
     # Ratios of anchors at each cell (width/height)
     # A value of 1 represents a square anchor, and 0.5 is a wide anchor
-    RPN_ANCHOR_RATIOS = [0.25, 0.5, 1, 2, 4]
+    RPN_ANCHOR_RATIOS = [0.5, 1, 2]
     # Anchor stride
     # If 1 then anchors are created for each cell in the backbone feature map.
     # If 2, then anchors are created for every other cell, and so on.

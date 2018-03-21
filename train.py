@@ -111,14 +111,14 @@ def main(args):
     model.train(
             dataset_train,
             dataset_val,
-            learning_rate=config.LEARNING_RATE / 10,
-            epochs=args.epochs,
+            learning_rate=config.LEARNING_RATE/10,
+            epochs=args.epochs * 2,
             layers="all")
     model.train(
             dataset_train,
             dataset_val,
-            learning_rate=config.LEARNING_RATE / 100,
-            epochs=args.epochs,
+            learning_rate=config.LEARNING_RATE/100,
+            epochs=args.epochs * 3,
             layers="all")
 
 
