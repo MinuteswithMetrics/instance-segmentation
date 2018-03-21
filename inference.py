@@ -21,7 +21,7 @@ model = modellib.MaskRCNN(mode="inference",
 # Either set a specific path or find last trained weights
 # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
 #model_path = model.find_last()[1]
-model_path = "./logs/20-0-DSB.h5"
+model_path = "./logs/LB391_33.h5"
 name, ext = os.path.splitext(os.path.basename(model_path))
 
 # Load trained weights (fill in path to trained weights here)

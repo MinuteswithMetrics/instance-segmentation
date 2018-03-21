@@ -83,4 +83,4 @@ class DSBConfig(Config):
     # Weight decay regularization
     WEIGHT_DECAY = 0.0001
 
-    RESNET_ARCHITECTURE = "resnet101"
+    RESNET_ARCHITECTURE = "resnet50"
