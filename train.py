@@ -125,9 +125,9 @@ def main(args):
     # Save weights
     # Typically not needed because callbacks save after every epoch
     # Uncomment to save manually
-    now = datetime.datetime.today()
-    model_path = os.path.join(MODEL_DIR, str(now.day)+"-"+str(now.hour)+"-"+"DSB.h5")
-    model.keras_model.save_weights(model_path)
+    #now = datetime.datetime.today()
+    #model_path = os.path.join(MODEL_DIR, str(now.day)+"-"+str(now.hour)+"-"+"DSB.h5")
+    #model.keras_model.save_weights(model_path)
 
 
 if __name__ == "__main__":

@@ -57,7 +57,7 @@ def numpy2encoding_no_overlap2(predicts, img_name, scores):
     # refine your masks here !
     # predicts = np.apply_along_axis(refineMasks, 2, predicts)
     for i in range(predicts.shape[2]-1):
-        predicts[:,:,i] = refineMasks(predicts[:,:,i])
+        predicts[:, :, i] = refineMasks(predicts[:, :, i])
 
     sum_predicts = np.sum(predicts, axis=2)
     rows, cols = np.where(sum_predicts>=2)

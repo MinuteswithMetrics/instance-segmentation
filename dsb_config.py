@@ -31,7 +31,7 @@ class DSBConfig(Config):
     IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512
 
-    LEARNING_RATE = 1e-4
+    LEARNING_RATE = 1e-3
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
@@ -83,4 +83,4 @@ class DSBConfig(Config):
     # Weight decay regularization
     WEIGHT_DECAY = 0.0001
 
-    RESNET_ARCHITECTURE = "resnet50"
+    RESNET_ARCHITECTURE = "resnet101"
