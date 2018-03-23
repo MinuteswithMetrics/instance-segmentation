@@ -85,6 +85,8 @@ def main(args):
     elif args.init_with == "last":
         # Load the last model you trained and continue training
         model.load_weights(model.find_last()[1], by_name=True)
+    else:
+        print("wrong mode")
 
     # Train the head branches
     # Passing layers="heads" freezes all layers except the head
