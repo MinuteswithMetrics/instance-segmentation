@@ -22,7 +22,9 @@ class DSBDataset(Dataset):
             matches = id_extractor.match(mask_path)
 
             image_id = matches.group("image_id")
-            image_path = os.path.join(base_path, image_id, "images", image_id + ".png")
+            image_file = os.listdir(os.path.join(base_path, image_id, "images"))[0]
+            image_path = os.path.join(base_path, image_id, "images", image_file)
+            #image_path = os.path.join(base_path, image_id, "images", image_id + ".png")
 
             if image_path in masks:
                 masks[image_path].append(mask_path)

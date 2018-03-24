@@ -521,9 +521,11 @@ def detection_targets_graph(proposals, gt_class_ids, gt_boxes, gt_masks, config)
         x2 = (x2 - gt_x1) / gt_w
         boxes = tf.concat([y1, x1, y2, x2], 1)
     box_ids = tf.range(0, tf.shape(roi_masks)[0])
-    masks = tf.image.crop_and_resize(tf.cast(roi_masks, tf.float32), boxes,
-                                     box_ids,
-                                     config.MASK_SHAPE)
+    masks = tf.image.crop_and_resize(
+            tf.cast(roi_masks, tf.float32),
+            boxes,
+            box_ids,
+            config.MASK_SHAPE)
     # Remove the extra dimension from masks.
     masks = tf.squeeze(masks, axis=3)
 
@@ -1138,7 +1140,7 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
     """
     # Load image and mask
     image = dataset.load_image(image_id)
-    mask, class_ids = dataset.load_mask(image_id)
+    mask, _ = dataset.load_mask(image_id)
     shape = image.shape
     image, window, scale, padding = utils.resize_image(
         image,
@@ -1146,6 +1148,13 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
         max_dim=config.IMAGE_MAX_DIM,
         padding=config.IMAGE_PADDING)
     mask = utils.resize_mask(mask, scale, padding)
+
+    # remove all 0 mask
+    mask = [mask[:,:,i] for i in range(mask.shape[2]-1) if len(np.unique(mask[:,:,i])) > 1]
+
+    mask = np.stack(mask, axis=-1)
+    count = mask.shape[2]
+    class_ids = np.ones(count).astype(np.int32)
 
     # Random horizontal flips.
     if augment:

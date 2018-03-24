@@ -46,8 +46,12 @@ def main(args):
     # create validation ids
     train_ids, val_ids = train_test_split(data_ids, test_size=0.1)
 
+    # dataset name
+    dataset_name = os.path.basename(args.data_path)
+
     # dataset config
     config = DSBConfig()
+    config.NAME = dataset_name
     config.STEPS_PER_EPOCH  = int(len(data_ids)/(config.GPU_COUNT*config.IMAGES_PER_GPU))
     config.VALIDATION_STEPS = int(len(val_ids)/(config.GPU_COUNT*config.IMAGES_PER_GPU))
     config.display()
