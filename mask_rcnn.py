@@ -1140,7 +1140,7 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
     """
     # Load image and mask
     image = dataset.load_image(image_id)
-    mask, _ = dataset.load_mask(image_id)
+    mask, class_ids = dataset.load_mask(image_id)
     shape = image.shape
     image, window, scale, padding = utils.resize_image(
         image,
@@ -1149,12 +1149,22 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
         padding=config.IMAGE_PADDING)
     mask = utils.resize_mask(mask, scale, padding)
 
+    """
     # remove all 0 mask
     mask = [mask[:,:,i] for i in range(mask.shape[2]-1) if len(np.unique(mask[:,:,i])) > 1]
 
-    mask = np.stack(mask, axis=-1)
-    count = mask.shape[2]
+    if len(mask) > 1:
+        mask = np.stack(mask, axis=-1)
+        count = mask.shape[2]
+    elif len(mask) == 1:
+        mask = np.asarray(mask)
+        mask = mask.reshape(512, 512, 1)
+        count = mask.shape[2]
+    else:
+        mask = np.asarray(mask)
+        count = 0
     class_ids = np.ones(count).astype(np.int32)
+    """
 
     # Random horizontal flips.
     if augment:

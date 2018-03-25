@@ -4,6 +4,22 @@ from skimage import morphology
 from skimage.morphology import binary_closing, binary_opening, disk, binary_dilation
 
 
+def tocluster(df, cluster):
+    cluster_df = pd.read_csv("../dataset/DSB/share_test_df.csv")
+    color_id = [row["img_id"] for i, row in cluster_df.iterrows() if not row["HSV_CLUSTER"] == 1]
+    gray_id = [row["img_id"] for i, row in cluster_df.iterrows() if row["HSV_CLUSTER"] == 1]
+
+    if cluster == "color":
+        ids = color_id
+    elif cluster == "gray":
+        ids = gray_id
+
+    for i, row in df.iterrows():
+        if not row.ImageId in ids:
+            df.loc[i, "EncodedPixels"] = np.nan
+    return df
+
+
 def run_length_encoding(x):
     dots = np.where(x.T.flatten() == 1)[0]
     run_lengths = []
@@ -82,9 +98,9 @@ def refineMasks(mask):
     return binary_dilation(mask, disk(1))
 
 
-def write2csv(file, ImageId, EncodedPixels):
+def write2csv(ImageId, EncodedPixels):
     df = pd.DataFrame({ 'ImageId' : ImageId , 'EncodedPixels' : EncodedPixels})
-    df.to_csv(file, index=False, columns=['ImageId', 'EncodedPixels'])
+    return df
 
 
 def clean_img(x):

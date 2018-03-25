@@ -59,6 +59,11 @@ class DSBDataset(Dataset):
         for i, mask_path in enumerate(mask_paths):
             masks.append(cv2.imread(mask_path, 0))
 
+        """
+        # remove all 0 mask
+        masks = [m for m in masks if len(np.unique(masks[i])) > 1]
+        """
+
         masks = np.stack(masks, axis=-1)
         masks = np.where(masks > 128, 1, 0)
 
