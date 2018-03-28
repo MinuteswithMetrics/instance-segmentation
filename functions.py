@@ -45,26 +45,6 @@ def numpy2encoding(predicts, img_name):
     return ImageId, EncodedPixels
 
 
-def numpy2encoding_no_overlap(predicts, img_name):
-    """
-    predicts: [H, W, N] instance binary masks
-    remove overlapping parts
-    """
-    sum_predicts = np.sum(predicts, axis=2)
-    sum_predicts[sum_predicts>=2] = 0
-    sum_predicts = np.expand_dims(sum_predicts, axis=-1)
-    predicts = predicts * sum_predicts
-
-    ImageId = []
-    EncodedPixels = []
-    for i in range(predicts.shape[2]):
-        rle = run_length_encoding(predicts[:,:,i])
-        if len(rle)>0:
-            ImageId.append(img_name)
-            EncodedPixels.append(rle)
-    return ImageId, EncodedPixels
-
-
 def numpy2encoding_no_overlap2(predicts, img_name, scores):
     """
     predicts: [H, W, N] instance binary masks

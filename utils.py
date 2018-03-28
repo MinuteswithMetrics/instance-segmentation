@@ -10,9 +10,36 @@ import skimage.color
 import skimage.io
 import urllib.request
 import shutil
+from scipy.misc import imresize
+
 
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"
+
+############################################################
+#  Image Augmetation
+############################################################
+def random_crop(image, mask, image_size=(512,512)):
+    h, w, c = mask.shape
+    # resize image and mask
+    image = imresize(image, (w*2, h*2))
+    new_mask = np.zeros((w*2, h*2, c))
+    for i in range(c-1):
+        new_mask[:, :, i] = imresize(mask[:, :, i], (w*2, h*2))
+
+    # Decide top and left bitween 0 to w and h
+    top = np.random.randint(0, h*2 - image_size[0])
+    left = np.random.randint(0, w*2 - image_size[1])
+
+    # Decide bottom and right
+    bottom = top + image_size[0]
+    right = left + image_size[1]
+
+    # crop image using top, bottom, left, right
+    image = image[top:bottom, left:right, :]
+    new_mask = new_mask[top:bottom, left:right, :]
+
+    return image, new_mask
 
 ############################################################
 #  Bounding Boxes

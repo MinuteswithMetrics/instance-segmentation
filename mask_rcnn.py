@@ -18,6 +18,7 @@ import keras.backend as K
 from keras.layers import Add, BatchNormalization, Conv2D, Conv2DTranspose, Activation, ZeroPadding2D, MaxPooling2D, Lambda, Input, TimeDistributed, Reshape, Dense, UpSampling2D, Concatenate
 from keras.engine import Layer
 from keras.models import Model
+from keras.preprocessing.image import ImageDataGenerator
 
 import utils
 
@@ -1149,10 +1150,18 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
         padding=config.IMAGE_PADDING)
     mask = utils.resize_mask(mask, scale, padding)
 
-    """
+    # Random horizontal flips.
+    if augment:
+        # random crop
+        if random.randint(0, 1):
+            image, mask = utils.random_crop(image, mask, (512, 512))
+        # horizontal flip
+        if random.randint(0, 1):
+            image = np.fliplr(image)
+            mask = np.fliplr(mask)
+
     # remove all 0 mask
     mask = [mask[:,:,i] for i in range(mask.shape[2]-1) if len(np.unique(mask[:,:,i])) > 1]
-
     if len(mask) > 1:
         mask = np.stack(mask, axis=-1)
         count = mask.shape[2]
@@ -1164,13 +1173,6 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
         mask = np.asarray(mask)
         count = 0
     class_ids = np.ones(count).astype(np.int32)
-    """
-
-    # Random horizontal flips.
-    if augment:
-        if random.randint(0, 1):
-            image = np.fliplr(image)
-            mask = np.fliplr(mask)
 
     # Bounding boxes. Note that some boxes might be all zeros
     # if the corresponding mask got cropped out.

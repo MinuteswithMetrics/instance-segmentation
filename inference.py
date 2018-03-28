@@ -9,10 +9,7 @@ from dsb_dataset import DSBDataset
 from utils import rle_encode, rle_decode, rle_to_string
 import functions as f
 
-def main(model_paths, cluster):
-    cluster = cluster
-    model_paths = model_paths
-
+def main(model_paths, cluster, output_dir):
     # test dataset
     dataset_test = DSBDataset()
     dataset_test.load_bowl('../dataset/DSB/test')
@@ -21,9 +18,10 @@ def main(model_paths, cluster):
     # Recreate the model in inference mode
     ROOT_DIR = os.getcwd()
     MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-    model = modellib.MaskRCNN(mode="inference",
-                              config=inference_config,
-                              model_dir=MODEL_DIR)
+    model = modellib.MaskRCNN(
+            mode="inference",
+            config=inference_config,
+            model_dir=MODEL_DIR)
 
     for model_path in tqdm(model_paths):
         # Load trained weights (fill in path to trained weights here)
@@ -49,7 +47,9 @@ def main(model_paths, cluster):
         df = f.write2csv(ImageId, EncodedPixels)
         if cluster:
             df = f.tocluster(df, cluster)
-        df.to_csv('./submit/{}/{}.csv'.format(cluster, name), index=False, columns=['ImageId', 'EncodedPixels'])
+        if not os.path.exists('./submit/{}'.format(output_dir)):
+            os.mkdir('./submit/{}'.format(output_dir))
+        df.to_csv('./submit/{}/{}.csv'.format(output_dir, name), index=False, columns=['ImageId', 'EncodedPixels'])
 
 
 if __name__ == "__main__":
@@ -57,17 +57,16 @@ if __name__ == "__main__":
     # Either set a specific path or find last trained weights
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     #model_path = model.find_last()[1]
-    cluster = "color"
+    cluster = "gray"
+    output_dir = "lr1e-3gray-2014"
     model_paths = [
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0010.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0015.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0015.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0020.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0025.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0030.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0035.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0040.h5",
-            "./logs/lr1e-3_coco_resnet101_color/mask_rcnn_color_0045.h5"
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0015.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0020.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0025.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0030.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0035.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0040.h5",
+            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0045.h5",
             ]
 
-    main(model_paths, cluster)
+    main(model_paths, cluster, output_dir)
