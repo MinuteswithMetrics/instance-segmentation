@@ -296,15 +296,6 @@ class Dataset(object):
         image_info.update(kwargs)
         self.image_info.append(image_info)
 
-    def image_reference(self, image_id):
-        """
-        Return a link to the image in its source Website or details about
-        the image that help looking it up or debugging it.
-        Override for your dataset, but pass to this function
-        if you encounter images not in your dataset.
-        """
-        return ""
-
     def prepare(self, class_map=None):
         """
         Prepares the Dataset class for use.
@@ -374,34 +365,6 @@ class Dataset(object):
         debugging.
         """
         return self.image_info[image_id]["path"]
-
-    def load_image(self, image_id):
-        """
-        Load the specified image and return a [H,W,3] Numpy array.
-        """
-        # Load image
-        image = skimage.io.imread(self.image_info[image_id]['path'])
-        # If grayscale. Convert to RGB for consistency.
-        if image.ndim != 3:
-            image = skimage.color.gray2rgb(image)
-        return image
-
-    def load_mask(self, image_id):
-        """
-        Load instance masks for the given image.
-        Different datasets use different ways to store masks. Override this
-        method to load instance masks and return them in the form of am
-        array of binary masks of shape [height, width, instances].
-        Returns:
-            masks: A bool array of shape [height, width, instance count] with
-                a binary mask per instance.
-            class_ids: a 1D array of class IDs of the instance masks.
-        """
-        # Override this function to load a mask from your dataset.
-        # Otherwise, it returns an empty mask.
-        mask = np.empty([0, 0, 0])
-        class_ids = np.empty([0], np.int32)
-        return mask, class_ids
 
 
 def resize_image(image, min_dim=None, max_dim=None, padding=False):
