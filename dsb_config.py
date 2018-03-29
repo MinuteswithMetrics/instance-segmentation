@@ -17,7 +17,7 @@ class DSBConfig(Config):
     IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512
 
-    LEARNING_RATE = 1e-3
+    LEARNING_RATE = 1e-2
 
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
@@ -80,7 +80,7 @@ class DSBConfig(Config):
     # Non-maximum suppression threshold for detection
     DETECTION_NMS_THRESHOLD = 0.3 # 0.3
 
-    MEAN_PIXEL = np.array([42.17746161, 38.21568456, 46.82167803])
+    MEAN_PIXEL = np.array([0, 0, 0])
 
     # Weight decay regularization
     WEIGHT_DECAY = 0.0001

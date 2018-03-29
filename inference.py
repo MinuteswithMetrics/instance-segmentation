@@ -58,15 +58,16 @@ if __name__ == "__main__":
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     #model_path = model.find_last()[1]
     cluster = "gray"
-    output_dir = "lr1e-3gray-2014"
+    output_dir = "lr1e-3gray-1024"
     model_paths = [
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0015.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0020.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0025.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0030.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0035.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0040.h5",
-            "./logs/lr1e-3gray-1024/mask_rcnn_gray_0045.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0010.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0015.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0020.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0025.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0030.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0035.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0040.h5",
+            "./logs/lr1e-3gray-512/mask_rcnn_gray_0045.h5",
             ]
 
     main(model_paths, cluster, output_dir)
