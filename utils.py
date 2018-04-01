@@ -21,15 +21,16 @@ COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0
 ############################################################
 def random_crop(image, mask, image_size=(512,512)):
     h, w, c = mask.shape
+    new_size = np.random.randint(w, w*1.20)
     # resize image and mask
-    image = imresize(image, (w*2, h*2))
-    new_mask = np.zeros((w*2, h*2, c))
+    image = imresize(image, (new_size, new_size))
+    new_mask = np.zeros((new_size, new_size, c))
     for i in range(c-1):
-        new_mask[:, :, i] = imresize(mask[:, :, i], (w*2, h*2))
+        new_mask[:, :, i] = imresize(mask[:, :, i], (new_size, new_size))
 
     # Decide top and left bitween 0 to w and h
-    top = np.random.randint(0, h*2 - image_size[0])
-    left = np.random.randint(0, w*2 - image_size[1])
+    top = np.random.randint(0, new_size - image_size[0]+1)
+    left = np.random.randint(0, new_size - image_size[1]+1)
 
     # Decide bottom and right
     bottom = top + image_size[0]

@@ -12,7 +12,7 @@ import functions as f
 def main(model_paths, cluster, output_dir):
     # test dataset
     dataset_test = DSBDataset()
-    dataset_test.load_bowl('../dataset/DSB/test')
+    dataset_test.load_bowl('../dataset/DSB/stage1_test')
     dataset_test.prepare()
 
     # Recreate the model in inference mode
@@ -57,17 +57,13 @@ if __name__ == "__main__":
     # Either set a specific path or find last trained weights
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     #model_path = model.find_last()[1]
-    cluster = "gray"
-    output_dir = "lr1e-3gray-1024"
+    cluster = ""
+    output_dir = "1e-3all"
     model_paths = [
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0010.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0015.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0020.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0025.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0030.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0035.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0040.h5",
-            "./logs/lr1e-3gray-512/mask_rcnn_gray_0045.h5",
+            "./logs/train_all20180401T1513/mask_rcnn_train_all_0015.h5",
+            "./logs/train_all20180401T1513/mask_rcnn_train_all_0020.h5",
+            "./logs/train_all20180401T1513/mask_rcnn_train_all_0025.h5",
+            "./logs/train_all20180401T1513/mask_rcnn_train_all_0030.h5",
             ]
 
     main(model_paths, cluster, output_dir)

@@ -1152,11 +1152,9 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
 
     # Random horizontal flips.
     if augment:
-        """
         # random crop
         if random.randint(0, 1):
             image, mask = utils.random_crop(image, mask, (512, 512))
-            """
         # horizontal flip
         if random.randint(0, 1):
             image = np.fliplr(image)

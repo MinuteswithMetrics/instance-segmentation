@@ -17,7 +17,7 @@ class DSBConfig(Config):
     IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512
 
-    LEARNING_RATE = 1e-2
+    LEARNING_RATE = 1e-3
 
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
@@ -85,4 +85,4 @@ class DSBConfig(Config):
     # Weight decay regularization
     WEIGHT_DECAY = 0.0001
 
-    RESNET_ARCHITECTURE = "resnet50"
+    RESNET_ARCHITECTURE = "resnet101"
