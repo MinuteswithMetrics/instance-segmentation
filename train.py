@@ -58,7 +58,6 @@ def main(args):
 
     # dataset
     # Training dataset
-    input_size = args.input_size
     dataset_train = DSBDataset()
     dataset_train.load_bowl(args.data_path)
     dataset_train.prepare()
@@ -96,14 +95,18 @@ def main(args):
     # Passing layers="heads" freezes all layers except the head
     # layers. You can also pass a regular expression to select
     # which layers to train by name pattern.
-    if args.freeze:
-        model.train(
-                dataset_train,
-                dataset_val,
-                learning_rate=config.LEARNING_RATE,
-                epochs=args.freeze_epochs,
-                layers='heads')
-
+    model.train(
+            dataset_train,
+            dataset_val,
+            learning_rate=config.LEARNING_RATE,
+            epochs=args.epochs,
+            layers='heads')
+    model.train(
+            dataset_train,
+            dataset_val,
+            learning_rate=config.LEARNING_RATE,
+            epochs=args.epochs*2,
+            layers='4+')
     # Fine tune all layers
     # Passing layers="all" trains all layers. You can also
     # pass a regular expression to select which layers to
@@ -112,19 +115,19 @@ def main(args):
             dataset_train,
             dataset_val,
             learning_rate=config.LEARNING_RATE,
-            epochs=args.epochs,
+            epochs=args.epochs*3,
             layers="all")
     model.train(
             dataset_train,
             dataset_val,
             learning_rate=config.LEARNING_RATE/10,
-            epochs=args.epochs * 2,
+            epochs=args.epochs*3+5,
             layers="all")
     model.train(
             dataset_train,
             dataset_val,
             learning_rate=config.LEARNING_RATE/100,
-            epochs=args.epochs * 3,
+            epochs=args.epochs*3+10,
             layers="all")
 
 
@@ -146,12 +149,6 @@ if __name__ == "__main__":
             default="../../dataset/DSB/stage1_train/",
             help='path to data list')
     argparser.add_argument(
-            '-s',
-            '--input_size',
-            type=int,
-            default=320,
-            help='input image size')
-    argparser.add_argument(
             '-e',
             '--epochs',
             type=int,
@@ -168,16 +165,6 @@ if __name__ == "__main__":
             type=str,
             default="imagenet",
             help='init with pretrained weights')
-    argparser.add_argument(
-            '--freeze',
-            type=bool,
-            default=True,
-            help='freeze weights except heads layers')
-    argparser.add_argument(
-            '--freeze_epochs',
-            type=int,
-            default=5,
-            help='epochs of freeze weights except heads layers')
     args = argparser.parse_args()
 
     #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
