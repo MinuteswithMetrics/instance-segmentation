@@ -19,9 +19,9 @@ COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0
 ############################################################
 #  Image Augmetation
 ############################################################
-def random_crop(image, mask, image_size=(512,512)):
+def scale_augment(image, mask, image_size=(512,512), rate=1.50):
     h, w, c = mask.shape
-    new_size = np.random.randint(w, w*1.50)
+    new_size = np.random.randint(w, w*rate)
     # resize image and mask
     image = imresize(image, (new_size, new_size))
     new_mask = np.zeros((new_size, new_size, c))
@@ -42,6 +42,23 @@ def random_crop(image, mask, image_size=(512,512)):
 
     return image, new_mask
 
+def random_crop(image, mask, image_size=(512,512)):
+    h, w, c = mask.shape
+    # resize image and mask
+
+    # Decide top and left bitween 0 to w and h
+    top = np.random.randint(0, h - image_size[0])
+    left = np.random.randint(0, w - image_size[1])
+
+    # Decide bottom and right
+    bottom = top + image_size[0]
+    right = left + image_size[1]
+
+    # crop image using top, bottom, left, right
+    image = image[top:bottom, left:right, :]
+    mask = mask[top:bottom, left:right, :]
+
+    return image, mask
 ############################################################
 #  Bounding Boxes
 ############################################################

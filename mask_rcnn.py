@@ -1120,7 +1120,7 @@ def mrcnn_mask_loss_graph(target_masks, target_class_ids, pred_masks):
 #  Data Generator
 ############################################################
 
-def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False):
+def load_image_gt(dataset, config, image_id, augment=True, use_mini_mask=False):
     """
     Load and return ground truth data for an image (image, mask, bounding boxes).
     augment: If true, apply random image augmentation. Currently, only
@@ -1143,36 +1143,38 @@ def load_image_gt(dataset, config, image_id, augment=False, use_mini_mask=False)
     image = dataset.load_image(image_id)
     mask, class_ids = dataset.load_mask(image_id)
     shape = image.shape
-    image, window, scale, padding = utils.resize_image(
-        image,
-        min_dim=config.IMAGE_MIN_DIM,
-        max_dim=config.IMAGE_MAX_DIM,
-        padding=config.IMAGE_PADDING)
-    mask = utils.resize_mask(mask, scale, padding)
+    # 512x512より大きい場合はcropして抜き出す
+    if (shape[0] > config.IMAGE_MAX_DIM) and (shape[1] > config.IMAGE_MAX_DIM):
+        image, mask = utils.random_crop(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM))
+        # shapeの更新
+        shape = image.shape
+        image, window, scale, padding = utils.resize_image(
+            image,
+            min_dim=config.IMAGE_MIN_DIM,
+            max_dim=config.IMAGE_MAX_DIM,
+            padding=config.IMAGE_PADDING)
+        mask = utils.resize_mask(mask, scale, padding)
+    else:
+        image, window, scale, padding = utils.resize_image(
+            image,
+            min_dim=config.IMAGE_MIN_DIM,
+            max_dim=config.IMAGE_MAX_DIM,
+            padding=config.IMAGE_PADDING)
+        mask = utils.resize_mask(mask, scale, padding)
 
-    # Random horizontal flips.
-    if augment:
-        # random crop
-        if random.randint(0, 1):
-            image, mask = utils.random_crop(image, mask, (512, 512))
-        # horizontal flip
-        if random.randint(0, 1):
-            image = np.fliplr(image)
-            mask = np.fliplr(mask)
+    # augment
+    # random crop
+    if random.randint(0, 1):
+        image, mask = utils.scale_augment(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM), rate=1.50)
+    # horizontal flip
+    if random.randint(0, 1):
+        image = np.fliplr(image)
+        mask = np.fliplr(mask)
 
     # remove all 0 mask
-    mask = [mask[:,:,i] for i in range(mask.shape[2]-1) if len(np.unique(mask[:,:,i])) > 1]
-    if len(mask) > 1:
-        mask = np.stack(mask, axis=-1)
-        count = mask.shape[2]
-    elif len(mask) == 1:
-        mask = np.asarray(mask)
-        mask = mask.reshape(512, 512, 1)
-        count = mask.shape[2]
-    else:
-        mask = np.asarray(mask)
-        count = 0
-    class_ids = np.ones(count).astype(np.int32)
+    _idx = np.sum(mask, axis=(0, 1)) > 0
+    mask = mask[:, :, _idx]
+    class_ids = class_ids[_idx]
 
     # Bounding boxes. Note that some boxes might be all zeros
     # if the corresponding mask got cropped out.
