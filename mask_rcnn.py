@@ -1145,6 +1145,7 @@ def load_image_gt(dataset, config, image_id, augment=True, use_mini_mask=False):
     shape = image.shape
     # 512x512より大きい場合はcropして抜き出す
     if (shape[0] > config.IMAGE_MAX_DIM) and (shape[1] > config.IMAGE_MAX_DIM):
+        # 切り抜き
         image, mask = utils.random_crop(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM))
         # shapeの更新
         shape = image.shape
@@ -1163,21 +1164,22 @@ def load_image_gt(dataset, config, image_id, augment=True, use_mini_mask=False):
         mask = utils.resize_mask(mask, scale, padding)
 
     # augment
-    # random crop
-    if random.randint(0, 1):
-        image, mask = utils.scale_augment(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM), rate=1.70)
-    # horizontal flip
-    if random.randint(0, 1):
-        image = np.fliplr(image)
-        mask = np.fliplr(mask)
-    # vertical flip
-    if random.randint(0, 1):
-        image = np.flipud(image)
-        mask = np.flipud(mask)
-    # rotate90
-    if random.randint(0, 1):
-        image = np.rot90(image)
-        mask = np.rot90(mask)
+    if augment:
+        # random crop
+        if random.randint(0, 1):
+            image, mask = utils.scale_augment(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM), rate=1.80)
+        # horizontal flip
+        if random.randint(0, 1):
+            image = np.fliplr(image)
+            mask = np.fliplr(mask)
+        # vertical flip
+        if random.randint(0, 1):
+            image = np.flipud(image)
+            mask = np.flipud(mask)
+        # rotate90
+        if random.randint(0, 1):
+            image = np.rot90(image)
+            mask = np.rot90(mask)
 
     # remove all 0 mask
     _idx = np.sum(mask, axis=(0, 1)) > 0
@@ -2225,7 +2227,8 @@ class MaskRCNN():
                 train_dataset,
                 self.config,
                 shuffle=True,
-                batch_size=self.config.BATCH_SIZE)
+                batch_size=self.config.BATCH_SIZE,
+                augment=True)
         val_generator = data_generator(
                 val_dataset,
                 self.config,
