@@ -1165,11 +1165,19 @@ def load_image_gt(dataset, config, image_id, augment=True, use_mini_mask=False):
     # augment
     # random crop
     if random.randint(0, 1):
-        image, mask = utils.scale_augment(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM), rate=1.50)
+        image, mask = utils.scale_augment(image, mask, (config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM), rate=1.70)
     # horizontal flip
     if random.randint(0, 1):
         image = np.fliplr(image)
         mask = np.fliplr(mask)
+    # vertical flip
+    if random.randint(0, 1):
+        image = np.flipud(image)
+        mask = np.flipud(mask)
+    # rotate90
+    if random.randint(0, 1):
+        image = np.rot90(image)
+        mask = np.rot90(mask)
 
     # remove all 0 mask
     _idx = np.sum(mask, axis=(0, 1)) > 0

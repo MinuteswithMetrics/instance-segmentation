@@ -60,19 +60,19 @@ if __name__ == "__main__":
     cluster = ""
     output_dir = "1e-3all"
     model_paths = [
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0020.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0025.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0030.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0031.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0032.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0033.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0034.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0035.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0036.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0037.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0038.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0039.h5",
-            "./logs/train_all20180405T1811/mask_rcnn_train_all_0040.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0028.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0029.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0030.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0031.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0032.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0033.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0034.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0035.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0036.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0037.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0038.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0039.h5",
+            "./logs/train_all_cvt20180406T0827/mask_rcnn_train_all_cvt_0040.h5",
             ]
 
     main(model_paths, cluster, output_dir)
