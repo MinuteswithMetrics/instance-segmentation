@@ -61,17 +61,17 @@ if __name__ == "__main__":
     output_dir = "train_all_cvt"
     test_dir = "../dataset/DSB/stage1_test_cvt/"
     model_paths = [
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0030.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0031.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0032.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0033.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0034.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0035.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0036.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0037.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0038.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0039.h5",
-            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0040.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0030.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0031.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0032.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0033.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0034.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0035.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0036.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0037.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0038.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0039.h5",
+            "./logs/train_all_cvt20180407T1706/mask_rcnn_train_all_cvt_0040.h5",
             ]
 
     main(model_paths, cluster, output_dir, test_dir)
