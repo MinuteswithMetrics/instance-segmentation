@@ -9,10 +9,10 @@ from dsb_dataset import DSBDataset
 from utils import rle_encode, rle_decode, rle_to_string
 import functions as f
 
-def main(model_paths, cluster, output_dir):
+def main(model_paths, cluster, output_dir, test_dir):
     # test dataset
     dataset_test = DSBDataset()
-    dataset_test.load_bowl('../dataset/DSB/stage1_test')
+    dataset_test.load_bowl(test_dir)
     dataset_test.prepare()
 
     # Recreate the model in inference mode
@@ -35,7 +35,7 @@ def main(model_paths, cluster, output_dir):
         ImageId = []
         EncodedPixels = []
         for image_id in sample_submission.ImageId:
-            image_path = os.path.join('../dataset/DSB/stage1_test', image_id, 'images', image_id + '.png')
+            image_path = os.path.join(test_dir, image_id, 'images', image_id + '.png')
             original_image = cv2.imread(image_path)
             results = model.detect([original_image], verbose=0)
             r = results[0]
@@ -58,19 +58,20 @@ if __name__ == "__main__":
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     #model_path = model.find_last()[1]
     cluster = ""
-    output_dir = "min256_train_all"
+    output_dir = "train_all_cvt"
+    test_dir = "../dataset/DSB/stage1_test_cvt/"
     model_paths = [
-            "./logs/min256_train_all/mask_rcnn_train_all_0030.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0031.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0032.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0033.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0034.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0035.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0036.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0037.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0038.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0039.h5",
-            "./logs/min256_train_all/mask_rcnn_train_all_0040.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0030.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0031.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0032.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0033.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0034.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0035.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0036.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0037.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0038.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0039.h5",
+            "./logs/train_all_cvt20180407T0100/mask_rcnn_train_all_cvt_0040.h5",
             ]
 
-    main(model_paths, cluster, output_dir)
+    main(model_paths, cluster, output_dir, test_dir)
