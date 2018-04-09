@@ -58,20 +58,25 @@ if __name__ == "__main__":
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     #model_path = model.find_last()[1]
     cluster = ""
-    output_dir = "train_all_imagenet"
+    output_dir = "train_all"
     test_dir = "../dataset/DSB/stage1_test/"
     model_paths = [
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0030.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0031.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0032.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0033.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0034.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0035.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0036.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0037.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0038.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0039.h5",
-            "./logs/train_all_imagenet/mask_rcnn_train_all_0040.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0035.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0036.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0037.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0038.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0039.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0040.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0041.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0042.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0043.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0044.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0045.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0046.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0047.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0048.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0049.h5",
+            "./logs/train_all20180409T1437/mask_rcnn_train_all_0050.h5",
             ]
 
     main(model_paths, cluster, output_dir, test_dir)
